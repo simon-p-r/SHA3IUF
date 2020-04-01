@@ -17,13 +17,7 @@ if (BUILD_SHARED_LIBS)
     )
 endif()
 
-set(sum_sources sha3sum.c)
-if(WIN32)
-   list(APPEND sum_sources win32/mman.c)
-endif()
-
-
-add_executable(sha3sum ${sum_sources})
+add_executable(sha3sum sha3sum.c)
 target_link_libraries(sha3sum sha3)
 
 if (BUILD_TESTS)
