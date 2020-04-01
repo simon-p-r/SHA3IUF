@@ -1,13 +1,33 @@
 #ifndef SHA3_H
 #define SHA3_H
 
+
+#ifdef _WIN32
+  /* Windows - set up dll import/export decorators. */
+# if defined(BUILDING_SHA3_SHARED)
+    /* Building shared library. */
+#   define SHA3_EXPORT __declspec(dllexport)
+# elif defined(USING_SHA3_SHARED)
+    /* Using shared library. */
+#   define SHA3_EXPORT __declspec(dllimport)
+# else
+    /* Building static library. */
+#   define SHA3_EXPORT /* nothing */
+# endif
+#elif __GNUC__ >= 4
+# define SHA3_EXPORT __attribute__((visibility("default")))
+#else
+# define SHA3_EXPORT /* nothing */
+#endif
+
+
 /* -------------------------------------------------------------------------
  * Works when compiled for either 32-bit or 64-bit targets, optimized for 
  * 64 bit.
  *
  * Canonical implementation of Init/Update/Finalize for SHA-3 byte input. 
  *
- * SHA3-256, SHA3-384, SHA-512 are implemented. SHA-224 can easily be added.
+ * SHA3-224, SHA3-256, SHA3-384, SHA-512 are implemented.
  *
  * Based on code from http://keccak.noekeon.org/ .
  *
@@ -49,20 +69,21 @@ enum SHA3_RETURN {
 typedef enum SHA3_RETURN sha3_return_t;
 
 /* For Init or Reset call these: */
-sha3_return_t sha3_Init(void *priv, unsigned bitSize);
+SHA3_EXPORT sha3_return_t sha3_Init(void *priv, unsigned bitSize);
 
-void sha3_Init256(void *priv);
-void sha3_Init384(void *priv);
-void sha3_Init512(void *priv);
+SHA3_EXPORT void sha3_Init224(void *priv);
+SHA3_EXPORT void sha3_Init256(void *priv);
+SHA3_EXPORT void sha3_Init384(void *priv);
+SHA3_EXPORT void sha3_Init512(void *priv);
 
-enum SHA3_FLAGS sha3_SetFlags(void *priv, enum SHA3_FLAGS);
+SHA3_EXPORT enum SHA3_FLAGS sha3_SetFlags(void *priv, enum SHA3_FLAGS);
 
-void sha3_Update(void *priv, void const *bufIn, size_t len);
+SHA3_EXPORT void sha3_Update(void *priv, void const *bufIn, size_t len);
 
-void const *sha3_Finalize(void *priv);
+SHA3_EXPORT void const *sha3_Finalize(void *priv);
 
 /* Single-call hashing */
-sha3_return_t sha3_HashBuffer( 
+SHA3_EXPORT sha3_return_t sha3_HashBuffer( 
     unsigned bitSize,   /* 256, 384, 512 */
     enum SHA3_FLAGS flags, /* SHA3_FLAGS_NONE or SHA3_FLAGS_KECCAK */
     const void *in, unsigned inBytes, 

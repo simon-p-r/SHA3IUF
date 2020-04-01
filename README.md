@@ -82,7 +82,7 @@ or
 
 There is also `sha3sum` test program that takes following parameters:
 
-    sha3sum 256|384|512 file_path 
+    sha3sum 224|256|384|512 file_path 
 
 or for Keccak version:
 
@@ -112,8 +112,8 @@ This corresponds to the result obtained in Solidity JavaScript test framework.
 
 ## API
 
-* the same `sha3_context` object maintains the state for SHA3-256, SHA3-384, or SHA3-512 algorithm;
-* the hash algorithm used is determined by how the context was initialized with `sha3_InitX`, e.g. `sha3_Init256`, `sha3_Init384`, or `sha3_Init512` call;
+* the same `sha3_context` object maintains the state for SHA3-224, SHA3-256, SHA3-384, or SHA3-512 algorithm;
+* the hash algorithm used is determined by how the context was initialized with `sha3_InitX`, e.g. `sha3_Init224`, `sha3_Init256`, `sha3_Init384`, or `sha3_Init512` call;
 * `sha3_Update` and `sha3_Finalize` are the same for regardless the type of the algorithm (`X`);
 * the buffer returned by `sha3_Finalize` will have `X` bits of hash;
 * `sha3_InitX` also works as Reset (zeroization) of the hash context; no Free function is needed;
@@ -126,7 +126,6 @@ Thanks to @ralight for moving the test code into separate `sha3test.c`
 
 ## Notes
 
-SHA3-224 is not supported, but can easily be added.
 
 The code was written to work with the Microsoft Visual Studio compiler (under `_MSC_VER`), but this build target was not tested.
 
